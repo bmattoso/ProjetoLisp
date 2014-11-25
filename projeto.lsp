@@ -87,6 +87,8 @@
 )
 
 (defun inverter (X)
+	((equal X 'INFINITO) '-INFINITO)
+	((equal X '-INFINITO) '-INFINITO)
 	(inverterAux X (mult X '2))
 )
 
@@ -127,6 +129,7 @@
 
 (defun somarSubtrair (X1 X2)
 	(cond 
+		((or  (equal X1 'NAN) (equal X2 'NAN)) 'NAN)
 		((and (or  (equal X1 'INFINITO) (equal X1 '-INFINITO)) (not (or  (equal X2 'INFINITO) (equal X2 '-INFINITO)))) X1)
 		((and (or  (equal X2 'INFINITO) (equal X2 '-INFINITO)) (not (or  (equal X1 'INFINITO) (equal X1 '-INFINITO)))) X2)
 		((and (equal X1 'INFINITO) (equal X2 'INFINITO)) 'INFINITO)
@@ -160,6 +163,7 @@
 (defun mult (X1 X2)
 	(cond 
 		;; VERIFICAÇÕES DE INFINITO
+		((or  (equal X1 'NAN) (equal X2 'NAN)) 'NAN)
 		((and (equal X1 'INFINITO) (equal X2 '-INFINITO)) '-INFINITO)
 		((and (equal X1 '-INFINITO) (equal X2 'INFINITO)) '-INFINITO)
 		((and (equal X1 'INFINITO) (equal X2 'INFINITO)) 'INFINITO)
@@ -224,6 +228,7 @@
 
 (defun div (X1 X2)
 	(cond 
+		((or  (equal X1 'NAN) (equal X2 'NAN)) 'NAN)
 		((equal X2 0) (cond
 							((equal X1 0) 'NaN)
 							('t 'INFINITO)
@@ -294,6 +299,9 @@
 
 (defun pot (X1 X2)
 	(cond 
+		((or  (equal X1 'NAN) (equal X2 'NAN)) 'NAN)
+			; Se for elevado a 0 e n for infinito ou 0
+		((and (equal X2 0) (and (not (or (equal X1 'INFINITO) (equal X1 '-INFINITO))) (not (equal X1 0)))) 1)
 		((equal X2 0) 'NAN) ; Caso 32 e 35
 		((and (equal X1 0) (ehNeg X2)) 'INFINITO) ; Caso 27
 		((equal X1 0) (or (equal X2 'INFINITO) (equal X2 '-INFINITO)) 0)   ; Caso 30, 31
@@ -316,6 +324,7 @@
 
 (defun modulo (X1 X2)
 	(cond 
+		((or  (equal X1 'NAN) (equal X2 'NAN)) 'NAN)
 		((and (ehNeg X1) (ehNeg X2)) (moduloAux (inverter X1) (inverter X2)))
 		((and (ehNeg X1) (not (ehNeg X2))) (inverter (moduloAux (inverter X1) X2)))
 		((and (not (ehNeg X1)) (ehNeg X2)) 'CONTA_INVALIDA) 
